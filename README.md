@@ -4,9 +4,13 @@ A very cursed implementation of modules in ZSH shell configured with a shell fun
 
 ```zsh
 function myprompt() {
-    kp_color green default kpmod_user
+    kp_color_push green
+    kpmod_user
     print -n @
-    kp_color blue default kpmod_machine
+    kpmod_machine
+    kp_color_pop
+    print -n :
+    kp_color blue default kpmod_pwd
     kpmod_superuser
     print -n ' '
 }
