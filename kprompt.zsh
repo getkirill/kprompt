@@ -2,7 +2,7 @@
 setopt prompt_subst
 
 function kpmod_pwd {
-    print -n "%~"
+    print -n "%$1~"
 }
 
 function kpmod_user {
@@ -16,6 +16,10 @@ function kpmod_machine {
 function kpmod_superuser {
     print -n "%(!.$([[ -n $2 ]] && print -n "%K{$2}" || print -n "%k")$([[ -n $1 ]] && print -n "%F{$1}" || print -n "%f")#.$)"
     kp_color_peek
+}
+
+function kpmod_exit {
+    print -n "%?"
 }
 
 function kpmod_git {
@@ -77,7 +81,7 @@ function _kprompt_bashlike() {
 }
 
 function _kprompt_bashlike_right() {
-    print -n '(%?)'
+    print -n ($(kpmod_exit))
 }
 function _kprompt_right_nop() {
     # lol
@@ -86,10 +90,13 @@ function _kprompt_right_nop() {
 
 KPROMPT=_kprompt_bashlike
 KRPROMPT=_kprompt_bashlike_right
+KPROMPT_EXIT_CODE=0
 
 function kprompt_reconfigure() {
+    KPROMPT_EXIT_CODE=$?
     PROMPT=$($KPROMPT)
     RPROMPT=$($KRPROMPT)
+    KPROMPT_EXIT_CODE=0
 }
 
 function kprompt() {

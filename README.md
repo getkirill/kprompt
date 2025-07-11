@@ -23,7 +23,7 @@ This will produce a prompt similar to standard bash prompts.
 
 ## Available modules
 
-- `kpmod_pwd` - shows pwd or `~` when home.
+- `kpmod_pwd [segments]` - shows pwd or `~` when home, optionally limiting segment count.
 - `kpmod_user` - user
 - `kpmod_machine` - hostname
 - `kpmod_superuser [fg] [bg]` - prints `#` with passed colors if root, plain `$` otherwise (color inherited from stack)
@@ -32,6 +32,7 @@ This will produce a prompt similar to standard bash prompts.
 - `kp_color_peek` - prints stack top
 - `kp_color <fg> <bg> <command> [args...]` - executes module with given colors
 - `kpmod_git <commit | branch | has-repo>` - outputs commit, branch, or returns presence of repo (0 if present, 1 if not)
+- `$KPROMPT_EXIT_CODE` - variable that saves $? before executing any code.
 
 ## Custom modules
 
