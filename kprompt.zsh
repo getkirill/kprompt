@@ -76,14 +76,25 @@ function _kprompt_bashlike() {
     print -n ' '
 }
 
+function _kprompt_bashlike_right() {
+    print -n '(%?)'
+}
+function _kprompt_right_nop() {
+    # lol
+    print -n ''
+}
+
 KPROMPT=_kprompt_bashlike
+KRPROMPT=_kprompt_bashlike_right
 
 function kprompt_reconfigure() {
     PROMPT=$($KPROMPT)
+    RPROMPT=$($KRPROMPT)
 }
 
 function kprompt() {
     KPROMPT=${1:-_kprompt_bashlike}
+    KRPROMPT=${2:-_kprompt_right_nop}
 }
 
 typeset -ga precmd_functions
