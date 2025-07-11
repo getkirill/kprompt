@@ -1,4 +1,5 @@
 #!/usr/bin/env zsh
+setopt prompt_subst
 
 function kpmod_pwd {
     print -n "%~"
@@ -15,6 +16,21 @@ function kpmod_machine {
 function kpmod_superuser {
     print -n "%(!.$([[ -n $2 ]] && print -n "%K{$2}" || print -n "%k")$([[ -n $1 ]] && print -n "%F{$1}" || print -n "%f")#.$)"
     kp_color_peek
+}
+
+function kpmod_git {
+    case $1 in
+        "commit")
+            git rev-parse --short HEAD | tr -d '\n'
+        ;;
+        "branch")
+            git rev-parse --abbrev-ref HEAD | tr -d '\n'
+        ;;
+        "has-repo")
+            git rev-parse --is-inside-work-tree &>/dev/null
+            return $?
+        ;;
+    esac
 }
 
 _KP_COLOR_STACK=()
@@ -49,6 +65,13 @@ function _kprompt_bashlike() {
     kp_color_pop
     print -n :
     kp_color blue default kpmod_pwd
+    if kpmod_git has-repo; then
+        print -n ' ('
+        kpmod_git branch
+        print -n ' '
+        kpmod_git commit
+        print -n ') '
+    fi
     kpmod_superuser
     print -n ' '
 }
@@ -58,8 +81,11 @@ KPROMPT=_kprompt_bashlike
 function kprompt_reconfigure() {
     PROMPT=$($KPROMPT)
 }
-kprompt_reconfigure
+
 function kprompt() {
     KPROMPT=${1:-_kprompt_bashlike}
-    kprompt_reconfigure
 }
+
+typeset -ga precmd_functions
+
+precmd_functions+=(kprompt_reconfigure)
