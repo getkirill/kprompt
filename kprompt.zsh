@@ -13,7 +13,7 @@ function kpmod_machine {
 }
 
 function kpmod_superuser {
-    print -n "%(!.%k%F{red}#.$)"
+    print -n "%(!.$([[ -n $2 ]] && print -n "%K{$2}" || print -n "%k")$([[ -n $1 ]] && print -n "%F{$1}" || print -n "%f")#.$)"
     kp_color_peek
 }
 

@@ -3,7 +3,9 @@
 A very cursed implementation of modules in ZSH shell configured with a shell function. The shell function prints prompt expansions, and all of it is collected into PROMPT. For example:
 
 ```zsh
+# plug "getkirill/kprompt" # or however you enable plugins
 function myprompt() {
+    # bashlike
     kp_color_push green
     kpmod_user
     print -n @
@@ -18,3 +20,14 @@ kprompt myprompt
 ```
 
 This will produce a prompt similar to standard bash prompts.
+
+## Available modules
+
+- `kpmod_pwd` - shows pwd or `~` when home.
+- `kpmod_user` - user
+- `kpmod_machine` - hostname
+- `kpmod_superuser [fg] [bg]` - prints `#` with passed colors if root, plain `$` otherwise
+- `kp_color_push [fg] [bg]` - pushes color onto stack and prints it out. if `default` is passed it is equivalent to %k or %f
+- `kp_color_pop` - pops color off stack and prints it out
+- `kp_color_peek` - prints stack top
+- `kp_color <fg> <bg> <command> [args...]` - executes module with given colors
